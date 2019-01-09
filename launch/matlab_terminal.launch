@@ -1,9 +1,9 @@
 <?xml version="1.0"?>
 <launch>
-  <node name="matlab_node" pkg="serial_ros" type="comm_read_write" output="screen" >
+  <node name="matlab_node1" pkg="serial_ros" type="comm_read_write" output="screen" >
         <param name="serial_port_name" value="/dev/ttyUSB0" />
         <!-- <param name="baudrate" value="B9600" /> -->
-        <param name="Hz" value="30.0" />
+        <param name="Hz" value="20.0" />
         <param name="Id" value="1" />
         <param name="is_uav_terminal" value="false" />
         <remap from="cmd_vel" to="/uav1/cmd_vel"/>
