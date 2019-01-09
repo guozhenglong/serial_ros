@@ -4,6 +4,7 @@
         <param name="serial_port_name" value="/dev/ttyUSB0" />
         <!-- <param name="baudrate" value="B9600" /> -->
         <param name="Hz" value="30.0" />
+        <param name="Id" value="1" />
         <param name="is_uav_terminal" value="false" />
         <remap from="cmd_vel" to="/uav1/cmd_vel"/>
         <remap from="truth_state" to="/uav1/ground_truth/state"/>

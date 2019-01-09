@@ -84,6 +84,7 @@ void serial_comm::read_cmd_data()
     memcpy(&_cmd_data, buff, sizeof(data_cmd_t));
     if(_cmd_data.sof==_header && _cmd_data.end == _tail)
     {
+        _pubCmdData.id = _cmd_data.id;
         _pubCmdData.a_x = (double)_cmd_data.ax/10000.0;
         _pubCmdData.a_y = (double)_cmd_data.ay/10000.0;
         _pubCmdData.v_z = (double)_cmd_data.vz/10000.0;
@@ -99,6 +100,8 @@ void serial_comm::read_state_data()
     memcpy(&_state_data, buff, sizeof(data_state_t));
     if(_state_data.sof==_header && _state_data.end == _tail)
     {
+        _pubStateData.id = _state_data.id;
+
         _pubStateData.p_x = (double)_state_data.px/10000.0;
         _pubStateData.p_y = (double)_state_data.py/10000.0;
         _pubStateData.p_z = (double)_state_data.pz/10000.0;

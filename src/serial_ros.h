@@ -11,7 +11,7 @@ namespace serial_mul
     class serial_ros :public serial_comm
     {
     public:
-        serial_ros(std::string serial_port_name, int serial_baudrate, bool uav_terminal): serial_comm(serial_port_name,serial_baudrate),Is_uav_port(uav_terminal)
+        serial_ros(std::string serial_port_name, int serial_baudrate, bool uav_terminal,int id): serial_comm(serial_port_name,serial_baudrate),Is_uav_port(uav_terminal),_id(id)
         {
         }
       
@@ -37,8 +37,7 @@ namespace serial_mul
 
         bool setRosCommunication(ros::NodeHandle &nh)
         {
-            _sub_cmd = nh.subscribe("cmd_vel",10,&serial_ros::vel_callback,this);
-            _pub_state_tf = nh.advertise<nav_msgs::Odometry>("truth_state",10);
+            
             if(Is_uav_port)
             {
                 _sub_state_tf = nh.subscribe("truth_state",10,&serial_ros::state_callback,this);
@@ -64,6 +63,7 @@ namespace serial_mul
         {
             std::cout<<*vel_data<<std::endl;
             // *10000   transform double to int, for serial transmission.
+            _cmd_data.id = _id;
             _cmd_data.ax = (int32_t)(vel_data->linear.x*10000);
             _cmd_data.ay = (int32_t)(vel_data->linear.y*10000);
             _cmd_data.vz = (int32_t)(vel_data->linear.z*10000);
@@ -73,6 +73,7 @@ namespace serial_mul
 
         void state_callback(const nav_msgs::Odometry::ConstPtr& state_data)
         {
+            _state_data.id = _id;
             _state_data.px = (int32_t)(state_data->pose.pose.position.x*10000);
             _state_data.py = (int32_t)(state_data->pose.pose.position.y*10000);
             _state_data.pz = (int32_t)(state_data->pose.pose.position.z*10000);
@@ -90,31 +91,38 @@ namespace serial_mul
 
         void get_read_cmd_data()
         {
-            _cmd_vel.linear.x = _pubCmdData.a_x;
-            _cmd_vel.linear.y = _pubCmdData.a_y;
-            _cmd_vel.linear.z = _pubCmdData.v_z;
-            _cmd_vel.angular.x = 0.0;
-            _cmd_vel.angular.y = 0.0;
-            _cmd_vel.angular.z = _pubCmdData.yaw_rate;
+            if(_pubCmdData.id==_id)
+            {
+                _cmd_vel.linear.x = _pubCmdData.a_x;
+                _cmd_vel.linear.y = _pubCmdData.a_y;
+                _cmd_vel.linear.z = _pubCmdData.v_z;
+                _cmd_vel.angular.x = 0.0;
+                _cmd_vel.angular.y = 0.0;
+                _cmd_vel.angular.z = _pubCmdData.yaw_rate;
+            }
         }
 
         void get_read_state_data()
         {
-            _state.header.stamp = ros::Time::now();
-            _state.header.frame_id = "serial_state_tf";
-            _state.pose.pose.position.x = _pubStateData.p_x;
-            _state.pose.pose.position.y = _pubStateData.p_y;
-            _state.pose.pose.position.z = _pubStateData.p_z;
+            if(_pubStateData.id==_id)
+            {
+                _state.header.stamp = ros::Time::now();
+                _state.header.frame_id = "serial_state_tf";
+                _state.pose.pose.position.x = _pubStateData.p_x;
+                _state.pose.pose.position.y = _pubStateData.p_y;
+                _state.pose.pose.position.z = _pubStateData.p_z;
 
-            _state.pose.pose.orientation.x = _pubStateData.q_x;
-            _state.pose.pose.orientation.y = _pubStateData.q_y;
-            _state.pose.pose.orientation.z = _pubStateData.q_z;
-            _state.pose.pose.orientation.w = _pubStateData.q_w;
+                _state.pose.pose.orientation.x = _pubStateData.q_x;
+                _state.pose.pose.orientation.y = _pubStateData.q_y;
+                _state.pose.pose.orientation.z = _pubStateData.q_z;
+                _state.pose.pose.orientation.w = _pubStateData.q_w;
 
-            _state.twist.twist.linear.x = _pubStateData.v_x;
-            _state.twist.twist.linear.y = _pubStateData.v_y;
-            _state.twist.twist.linear.z = _pubStateData.v_z;
-            
+                _state.twist.twist.linear.x = _pubStateData.v_x;
+                _state.twist.twist.linear.y = _pubStateData.v_y;
+                _state.twist.twist.linear.z = _pubStateData.v_z;
+
+            }
+                        
         }
 
     private:
@@ -129,6 +137,7 @@ namespace serial_mul
         // ros::NodeHandle _nh;
         geometry_msgs::Twist _cmd_vel;
         nav_msgs::Odometry _state;
+        int _id;
         double Hz;
         bool Is_uav_port;
         
