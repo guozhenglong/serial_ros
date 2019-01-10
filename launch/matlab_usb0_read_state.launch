@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <launch>
-  <node name="uav_node1" pkg="serial_ros" type="comm_read_write" output="screen" >
+  <node name="comm_read_state" pkg="serial_ros" type="comm_read_state" output="screen" >
         <param name="serial_port_name" value="/dev/ttyUSB0" />
         <!-- <param name="baudrate" value="B9600" /> -->
         <param name="Hz" value="20.0" />
