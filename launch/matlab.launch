@@ -1,0 +1,5 @@
+<?xml version="1.0"?>
+<launch>
+  <include file="$(find serial_ros)/launch/matlab_usb0_read_state.launch" />
+  <include file="$(find serial_ros)/launch/matlab_usb1_send_cmd.launch" />
+</launch>

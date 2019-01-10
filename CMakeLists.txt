@@ -46,7 +46,33 @@ add_executable(comm_read_write
   src/serial_comm.cpp
   src/serial_ros_node.cpp
 )
-
-# add_dependencies(comm_read_write ${PROJECT_NAME}_generate_messages_cpp)
 target_link_libraries(comm_read_write ${catkin_LIBRARIES} ${self_LIBRARIES} ${OpenCV_LIBRARIES})
 add_dependencies(comm_read_write ${PROJECT_NAME}_generate_messages_cpp ${catkin_EXPORTED_TARGETS} ${Boost_LIBRARIES})
+
+add_executable(comm_read_cmd
+  src/serial_comm.cpp
+  src/serial_ros_r_cmd_node.cpp
+)
+target_link_libraries(comm_read_cmd ${catkin_LIBRARIES} ${self_LIBRARIES} ${OpenCV_LIBRARIES})
+add_dependencies(comm_read_cmd ${PROJECT_NAME}_generate_messages_cpp ${catkin_EXPORTED_TARGETS} ${Boost_LIBRARIES})
+
+add_executable(comm_read_state
+  src/serial_comm.cpp
+  src/serial_ros_r_state_node.cpp
+)
+target_link_libraries(comm_read_state ${catkin_LIBRARIES} ${self_LIBRARIES} ${OpenCV_LIBRARIES})
+add_dependencies(comm_read_state ${PROJECT_NAME}_generate_messages_cpp ${catkin_EXPORTED_TARGETS} ${Boost_LIBRARIES})
+
+add_executable(comm_write_cmd
+  src/serial_comm.cpp
+  src/serial_ros_t_cmd_node.cpp
+)
+target_link_libraries(comm_write_cmd ${catkin_LIBRARIES} ${self_LIBRARIES} ${OpenCV_LIBRARIES})
+add_dependencies(comm_write_cmd ${PROJECT_NAME}_generate_messages_cpp ${catkin_EXPORTED_TARGETS} ${Boost_LIBRARIES})
+
+add_executable(comm_write_state
+  src/serial_comm.cpp
+  src/serial_ros_t_state_node.cpp
+)
+target_link_libraries(comm_write_state ${catkin_LIBRARIES} ${self_LIBRARIES} ${OpenCV_LIBRARIES})
+add_dependencies(comm_write_state ${PROJECT_NAME}_generate_messages_cpp ${catkin_EXPORTED_TARGETS} ${Boost_LIBRARIES})

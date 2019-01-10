@@ -1,0 +1,5 @@
+<?xml version="1.0"?>
+<launch>
+  <include file="$(find serial_ros)/launch/uav_usb0_send_state.launch" />
+  <include file="$(find serial_ros)/launch/uav_usb1_read_cmd.launch" />
+</launch>
