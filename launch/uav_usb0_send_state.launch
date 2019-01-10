@@ -6,7 +6,7 @@
         <param name="Hz" value="20.0" />
         <param name="Id" value="1" />
         <!-- <param name="is_uav_terminal" value="true" /> -->
-        <remap from="cmd_vel" to="/uav1/cmd_vel"/>
-        <!-- <remap from="truth_state" to="/uav1/ground_truth/state"/> -->
+        <!-- <remap from="cmd_vel" to="/uav1/cmd_vel"/> -->
+        <remap from="truth_state" to="/uav1/ground_truth/state"/>
   </node>
 </launch>
