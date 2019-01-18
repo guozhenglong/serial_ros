@@ -100,6 +100,7 @@ void serial_comm::read_state_data()
     memcpy(&_state_data, buff, sizeof(data_state_t));
     if(_state_data.sof==_header && _state_data.end == _tail)
     {
+       
         _pubStateData.id = _state_data.id;
 
         _pubStateData.p_x = (double)_state_data.px/10000.0;
@@ -114,7 +115,7 @@ void serial_comm::read_state_data()
         _pubStateData.v_x = (double)_state_data.vx/10000.0;
         _pubStateData.v_y = (double)_state_data.vy/10000.0;
         _pubStateData.v_z = (double)_state_data.vz/10000.0;
-
+        std::cout<<_pubStateData<<std::endl;
 
     }
 }
